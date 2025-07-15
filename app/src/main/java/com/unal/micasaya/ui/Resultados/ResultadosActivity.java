@@ -92,25 +92,6 @@ public class ResultadosActivity extends AppCompatActivity {
                 "4. **Pórticos:** Recomendaciones sobre el sistema estructural (ej. aporticado, muros de carga), rigidización.\n" +
                 "Asegúrate de basar tus respuestas en los principios de la NSR-10 para prefactibilidad. Indica si se requiere un estudio geotécnico detallado.";
 
-        // Ejemplo de cómo llamarías a Gemini (pseudocódigo)
-        /*
-        GeminiApiClient geminiClient = new GeminiApiClient("YOUR_GEMINI_API_KEY");
-        geminiClient.generateContent(prompt, new GeminiApiClient.GeminiCallback() {
-            @Override
-            public void onSuccess(GeminiResponse response) {
-                String recommendations = response.getText(); // O parsear JSON si es necesario
-                textViewRecommendations.setText(recommendations);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                textViewRecommendations.setText("Error al generar recomendaciones: " + e.getMessage());
-                Toast.makeText(ResultadosActivity.this, "Error al conectar con Gemini.", Toast.LENGTH_LONG).show();
-            }
-        });
-        */
-
-        // Simulación de respuesta de Gemini para demostración
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
