@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ui.Cuestionario.CuestionarioActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/questionnaireTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cuestionario de Prefactibilidad"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. ¿Cuál es el tipo de suelo predominante en el sitio?"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupSoilType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RadioButton android:id="@+id/radioSoilType1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Roca" />
+            <RadioButton android:id="@+id/radioSoilType2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Suelo Duro/Compacto (Arcilla, Arena densa)" />
+            <RadioButton android:id="@+id/radioSoilType3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Suelo Blando/Suelto (Arcilla blanda, Limo)" />
+            <RadioButton android:id="@+id/radioSoilType4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Suelo Expansivo/Colapsable" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. ¿Cuántos pisos tendrá la edificación (incluyendo sótano si aplica)?"
+            android:textSize="18sp"
+            android:layout_marginTop="24dp" />
+
+        <EditText
+            android:id="@+id/editTextNumFloors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ej. 1, 2, 3..."
+            android:inputType="number"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. ¿Cuál es el nivel de riesgo sísmico de la zona (según estudio o datos previos)?"
+            android:textSize="18sp"
+            android:layout_marginTop="24dp" />
+
+        <Spinner
+            android:id="@+id/spinnerSeismicRisk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/seismic_risk_options"
+            android:padding="10dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="4. ¿Cuál será el uso principal de la edificación?"
+            android:textSize="18sp"
+            android:layout_marginTop="24dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupBuildingUse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RadioButton android:id="@+id/radioUseResidential" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Residencial (Vivienda)" />
+            <RadioButton android:id="@+id/radioUseCommercial" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Comercial (Oficinas, Tiendas pequeñas)" />
+            <RadioButton android:id="@+id/radioUseMixed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mixto (Residencial y Comercial)" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/buttonSubmitQuestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generar Recomendaciones"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="24dp"
+            android:layout_marginBottom="24dp"/>
+
+    </LinearLayout>
+</ScrollView>

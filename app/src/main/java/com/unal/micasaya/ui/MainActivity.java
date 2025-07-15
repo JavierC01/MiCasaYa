@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.unal.micasaya.R;
+import com.unal.micasaya.ui.Login.LoginActivity;
+import com.unal.micasaya.ui.Registro.RegistroActivity;
 
 public class MainActivity extends AppCompatActivity {
 
