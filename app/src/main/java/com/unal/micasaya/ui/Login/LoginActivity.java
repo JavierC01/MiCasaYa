@@ -19,15 +19,46 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText loginemail;
     private EditText loginpassword;
-    // ... UI elements ...
+    private Button buttonLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // ...
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        loginemail = findViewById(R.id.editTextEmail);
-        loginpassword = findViewById(R.id.editTextPassword);
+        loginemail = findViewById(R.id.editTextLoginEmail);
+        loginpassword = findViewById(R.id.editTextLoginPassword);
+        buttonLogin = findViewById(R.id.buttonLogin);
+
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validateInput()) {
+                    performLogin();
+                }
+            }
+        });
+
+    }
+
+    private boolean validateInput() {
+        String email = loginemail.getText().toString().trim();
+        String password = loginpassword.getText().toString().trim();
+
+        if (email.isEmpty()) {
+            loginemail.setError("El correo es requerido");
+            loginemail.requestFocus();
+            return false;
+        }
+        // Puedes añadir validación de formato de email aquí
+
+        if (password.isEmpty()) {
+            loginpassword.setError("La contraseña es requerida");
+            loginpassword.requestFocus();
+            return false;
+        }
+        return true;
     }
 
     private void performLogin() {

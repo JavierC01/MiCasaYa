@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class CuestionarioActivity extends AppCompatActivity {
 
-    private ArrayList<LatLng> polygonPoints; // Para recibir los puntos del mapa
+    private ArrayList<LatLng> polygonPoints;
     private RadioGroup radioGroupSoilType, radioGroupBuildingUse;
     private EditText editTextNumFloors;
     private Spinner spinnerSeismicRisk;
@@ -31,16 +31,15 @@ public class CuestionarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuestionario);
 
-        // Recuperar los puntos del polígono del Intent
         if (getIntent().hasExtra("polygonPoints")) {
             polygonPoints = getIntent().getParcelableArrayListExtra("polygonPoints");
-            // Aquí puedes usar polygonPoints para tu lógica, quizás para obtener el área, etc.
+
             if (polygonPoints != null && !polygonPoints.isEmpty()) {
                 Toast.makeText(this, "Polígono recibido con " + polygonPoints.size() + " puntos.", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, "No se recibieron puntos del polígono.", Toast.LENGTH_LONG).show();
-            // Considera redirigir o manejar este caso si es un error
+
         }
 
         radioGroupSoilType = findViewById(R.id.radioGroupSoilType);
@@ -85,8 +84,7 @@ public class CuestionarioActivity extends AppCompatActivity {
             return;
         }
 
-        // Aquí envías esta información (y los puntos del polígono) a la siguiente actividad
-        // que generará las recomendaciones con Gemini y el plano con IA.
+
         Intent intent = new Intent(CuestionarioActivity.this, ResultadosActivity.class);
         intent.putExtra("polygonPoints", polygonPoints); // Re-envía los puntos del polígono
         intent.putExtra("soilType", soilType);

@@ -32,8 +32,6 @@ public class HomeActivity extends AppCompatActivity {
         buttonMaterials = findViewById(R.id.buttonMaterials);
         buttonLogout = findViewById(R.id.buttonLogout);
 
-        // Puedes personalizar el mensaje de bienvenida aquí, quizás obteniendo el nombre del usuario de la sesión
-
         welcomeMessage.setText("Bienvenido, de nuevo!");
 
         buttonCreateProject.setOnClickListener(new View.OnClickListener() {

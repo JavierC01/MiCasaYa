@@ -25,26 +25,61 @@ public class RegistroActivity extends AppCompatActivity {
     private EditText registroName;
     private EditText registroemail;
     private EditText registropassword;
+    private Button buttonRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // ...
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+        buttonRegister = findViewById(R.id.buttonRegister);
         registroemail = findViewById(R.id.editTextEmail);
         registropassword = findViewById(R.id.editTextPassword);
         registroName = findViewById(R.id.editTextName);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        // ...
+
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validateInput()) {
+                    registerUser();
+                }
+            }
+        });
     }
+
+    private boolean validateInput() {
+        String name = registroName.getText().toString().trim();
+        String email = registroemail.getText().toString().trim();
+        String password = registropassword.getText().toString().trim();
+
+        if (name.isEmpty()) {
+            registroName.setError("El nombre es requerido");
+            registroName.requestFocus();
+            return false;
+        }
+
+        if (email.isEmpty()) {
+            registroemail.setError("El correo es requerido");
+            registroemail.requestFocus();
+            return false;
+        }
+
+        if (password.isEmpty()) {
+            registropassword.setError("La contraseña es requerida");
+            registropassword.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
 
     private void registerUser() {
         String email = registroemail.getText().toString().trim();
         String password = registropassword.getText().toString().trim();
-        String displayName = registroName.getText().toString().trim(); // Asumiendo que agregaste este campo
-
-        // Validaciones de campos (vacíos, contraseñas coinciden)
+        String displayName = registroName.getText().toString().trim();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
