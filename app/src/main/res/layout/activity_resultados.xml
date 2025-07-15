@@ -48,7 +48,6 @@
             android:layout_marginTop="32dp"
             android:scaleType="centerInside"
             android:background="@android:color/darker_gray"
-            android:src="@drawable/placeholder_plan"
             android:contentDescription="Plano en Planta Generado por IA" />
 
         <TextView
