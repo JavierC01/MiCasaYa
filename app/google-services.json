@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "740145000392",
+    "project_id": "micasaya-fb6bc",
+    "storage_bucket": "micasaya-fb6bc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740145000392:android:821ce443516ce864969afd",
+        "android_client_info": {
+          "package_name": "com.unal.micasaya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZhIMi-TmM8zmH4mFP6NV1mFik0lyT7Bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

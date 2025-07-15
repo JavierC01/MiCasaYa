@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainActivity">
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.tuempresa.tunombreapp.MainActivity"
+        android:label="MainActivity"
+        tools:layout="@layout/activity_main">
+        <action
+            android:id="@+id/action_mainActivity_to_loginActivity"
+            app:destination="@id/loginActivity" />
+        <action
+            android:id="@+id/action_mainActivity_to_registroActivity"
+            app:destination="@id/registroActivity" />
+    </activity>
+
+    <activity
+        android:id="@+id/registroActivity"
+        android:name="com.tuempresa.tunombreapp.RegistroActivity"
+        android:label="RegistroActivity"
+        tools:layout="@layout/activity_registro">
+        <action
+            android:id="@+id/action_registroActivity_to_loginActivity"
+            app:destination="@id/loginActivity"
+            app:popUpTo="@id/registroActivity"
+            app:popUpToInclusive="true" />
+    </activity>
+
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.tuempresa.tunombreapp.LoginActivity"
+        android:label="LoginActivity"
+        tools:layout="@layout/activity_login">
+        <action
+            android:id="@+id/action_loginActivity_to_homeActivity"
+            app:destination="@id/homeActivity"
+            app:popUpTo="@id/mainActivity"
+            app:popUpToInclusive="true" /> <action
+        android:id="@+id/action_loginActivity_to_registroActivity"
+        app:destination="@id/registroActivity" />
+    </activity>
+
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.tuempresa.tunombreapp.HomeActivity"
+        android:label="HomeActivity"
+        tools:layout="@layout/activity_home">
+        <action
+            android:id="@+id/action_homeActivity_to_mapaActivity"
+            app:destination="@id/mapaActivity" />
+        <action
+            android:id="@+id/action_homeActivity_to_misProyectosActivity"
+            app:destination="@id/misProyectosActivity" />
+        <action
+            android:id="@+id/action_homeActivity_to_materialsActivity"
+            app:destination="@id/materialsActivity" /> </activity>
+
+    <activity
+        android:id="@+id/misProyectosActivity"
+        android:name="com.tuempresa.tunombreapp.MisProyectosActivity"
+        android:label="MisProyectosActivity"
+        tools:layout="@layout/activity_mis_proyectos">
+        <action
+            android:id="@+id/action_misProyectosActivity_to_mapaActivity"
+            app:destination="@id/mapaActivity" /> </activity>
+
+    <activity
+        android:id="@+id/mapaActivity"
+        android:name="com.tuempresa.tunombreapp.MapaActivity"
+        android:label="MapaActivity"
+        tools:layout="@layout/activity_mapa">
+        <action
+            android:id="@+id/action_mapaActivity_to_cuestionarioActivity"
+            app:destination="@id/cuestionarioActivity" />
+    </activity>
+
+    <activity
+        android:id="@+id/cuestionarioActivity"
+        android:name="com.tuempresa.tunombreapp.CuestionarioActivity"
+        android:label="CuestionarioActivity"
+        tools:layout="@layout/activity_cuestionario">
+        <action
+            android:id="@+id/action_cuestionarioActivity_to_resultadosActivity"
+            app:destination="@id/resultadosActivity" />
+    </activity>
+
+    <activity
+        android:id="@+id/resultadosActivity"
+        android:name="com.tuempresa.tunombreapp.ResultadosActivity"
+        android:label="ResultadosActivity"
+        tools:layout="@layout/activity_resultados">
+        <action
+            android:id="@+id/action_resultadosActivity_to_homeActivity"
+            app:destination="@id/homeActivity"
+            app:popUpTo="@id/homeActivity"
+            app:popUpToInclusive="true" /> </activity>
+
+    <activity
+        android:id="@+id/materialsActivity"
+        android:name="com.tuempresa.tunombreapp.MaterialsActivity"
+        android:label="MaterialsActivity"
+        tools:layout="@layout/activity_materials" />
+
+</navigation>

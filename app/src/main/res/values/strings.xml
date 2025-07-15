@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="seismic_risk_options">
+        <item>Bajo</item>
+        <item>Medio</item>
+        <item>Alto</item>
+        <item>No definido / Desconozco</item>
+    </string-array>
+</resources>
