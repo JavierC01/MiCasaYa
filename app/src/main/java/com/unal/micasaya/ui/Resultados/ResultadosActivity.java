@@ -6,29 +6,39 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log; // Cambiado para usar android.util.Log
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText; // Ejemplo, si añades EditTexts
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-
-
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.unal.micasaya.R;
+import com.unal.micasaya.ui.Resultados.Project; // ¡IMPORTANTE! Asegúrate de que esta clase exista y esté correcta
 import com.unal.micasaya.ui.Home.HomeActivity;
+import com.unal.micasaya.ui.MisProyectos.MisProyectosActivity; // Importar si navegas aquí
 
+import java.util.ArrayList;
+import java.util.HashMap; // ¡IMPORTANTE!
+import java.util.List;
+import java.util.Map;
 
 public class ResultadosActivity extends AppCompatActivity {
+
+    private static final String TAG = "ResultadosActivity"; // ¡IMPORTANTE!
 
     private TextView textViewRecommendations;
     private ImageView imageViewFloorPlan;
     private Button buttonSaveProject;
+    // private EditText editTextProjectName; // Ejemplo
+    // private EditText editTextProjectDescription; // Ejemplo
 
-    // Datos recibidos del cuestionario
-    private ArrayList<LatLng> polygonPoints;
+    // private List<LatLng> confirmedPolygonPoints; // Ya no se usa directamente si usas polygonPoints
+    private FirebaseFirestore db;
+    private ArrayList<LatLng> polygonPoints; // Esto se carga desde el Intent
     private String soilType;
     private int numFloors;
     private String seismicRisk;
@@ -37,25 +47,36 @@ public class ResultadosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseFirestore.getInstance();
         setContentView(R.layout.activity_resultados);
 
         textViewRecommendations = findViewById(R.id.textViewRecommendations);
         imageViewFloorPlan = findViewById(R.id.imageViewFloorPlan);
         buttonSaveProject = findViewById(R.id.buttonSaveProject);
+        // editTextProjectName = findViewById(R.id.editTextProjectName); // Ejemplo
+        // editTextProjectDescription = findViewById(R.id.editTextProjectDescription); // Ejemplo
 
-        // 1. Obtener datos del Intent
+
         getProjectDataFromIntent();
-
-        // 2. Generar recomendaciones con Gemini
         generateRecommendationsWithGemini();
-
-        // 3. Generar plano con IA
         generateFloorPlanWithAI();
 
         buttonSaveProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveProject();
+                // Necesitas obtener el nombre y descripción del proyecto
+                // String name = editTextProjectName.getText().toString(); // Ejemplo
+                // String description = editTextProjectDescription.getText().toString(); // Ejemplo
+
+                // ** VALORES TEMPORALES - DEBES OBTENERLOS DE LA UI O DEL INTENT SI CORRESPONDE **
+                String projectNameFromSomewhere = "Proyecto " + System.currentTimeMillis();
+                String projectDescriptionFromSomewhere = "Descripción para " + projectNameFromSomewhere;
+                if (buildingUse != null && !buildingUse.isEmpty()) {
+                    projectDescriptionFromSomewhere += " - Uso: " + buildingUse;
+                }
+
+
+                saveProjectToFirestore(projectNameFromSomewhere, projectDescriptionFromSomewhere);
             }
         });
     }
@@ -68,9 +89,16 @@ public class ResultadosActivity extends AppCompatActivity {
             numFloors = intent.getIntExtra("numFloors", 0);
             seismicRisk = intent.getStringExtra("seismicRisk");
             buildingUse = intent.getStringExtra("buildingUse");
+
+            // Podrías inicializar confirmedPolygonPoints aquí si lo necesitas en otro lugar,
+            // pero para guardar, es más directo usar polygonPoints.
+            // if (polygonPoints != null) {
+            // confirmedPolygonPoints = new ArrayList<>(polygonPoints);
+            // }
         }
     }
 
+    // ... generateRecommendationsWithGemini() y generateFloorPlanWithAI() sin cambios ...
     private void generateRecommendationsWithGemini() {
 
 
@@ -108,27 +136,58 @@ public class ResultadosActivity extends AppCompatActivity {
 
 
     private void generateFloorPlanWithAI() {
-        String base64Image = "";
+        String base64Image = ""; // Esto simula que no hay imagen
         if (!base64Image.isEmpty()) {
             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             imageViewFloorPlan.setImageBitmap(decodedByte);
         } else {
+            // Asegúrate de que tienes un drawable llamado 'placeholder_plan' en res/drawable
             imageViewFloorPlan.setImageResource(R.drawable.placeholder_plan);
         }
         Toast.makeText(this, "Plano en planta simulado.", Toast.LENGTH_SHORT).show();
     }
 
-    private void saveProject() {
-        // Aquí implementarías la lógica para guardar todos los datos del proyecto
-        // (puntos del polígono, respuestas del cuestionario, recomendaciones, etc.)
-        // en tu base de datos (Firebase Firestore, SQLite, etc.).
-        Toast.makeText(this, "Proyecto guardado (funcionalidad pendiente)", Toast.LENGTH_SHORT).show();
 
-        // Tras guardar, podrías redirigir al usuario a la lista de "Mis Proyectos"
-        Intent intent = new Intent(ResultadosActivity.this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Limpia el stack para volver al Home
-        startActivity(intent);
-        finish();
+    private void saveProjectToFirestore(String projectName, String projectDescription) {
+        if (projectName == null || projectName.trim().isEmpty()) {
+            Toast.makeText(this, "El nombre del proyecto no puede estar vacío.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<Map<String, Double>> firestorePoints = new ArrayList<>();
+        if (polygonPoints != null) { // Usar polygonPoints que viene del Intent
+            for (com.google.android.gms.maps.model.LatLng point : polygonPoints) {
+                Map<String, Double> pointMap = new HashMap<>();
+                pointMap.put("latitude", point.latitude);
+                pointMap.put("longitude", point.longitude);
+                firestorePoints.add(pointMap);
+            }
+        }
+
+        // Crear el objeto Project (asegúrate de que la clase Project exista y tenga los campos correctos)
+        // También puedes añadir los otros campos como soilType, numFloors, etc., a tu clase Project
+        // y pasarlos al constructor o mediante setters.
+        Project newProject = new Project(projectName, projectDescription, firestorePoints);
+        // Ejemplo si Project tiene más campos:
+        // newProject.setSoilType(soilType);
+        // newProject.setNumFloors(numFloors);
+        // ... etc.
+
+        db.collection("projects")
+                .add(newProject)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                    Toast.makeText(ResultadosActivity.this, "Proyecto '" + projectName + "' guardado.", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(ResultadosActivity.this, MisProyectosActivity.class); // O HomeActivity, según prefieras
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error adding document", e);
+                    Toast.makeText(ResultadosActivity.this, "Error al guardar proyecto: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 }

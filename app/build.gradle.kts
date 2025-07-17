@@ -49,6 +49,8 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
     implementation("com.google.ai.client.generativeai:generativeai:0.2.1")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation(platform(("com.google.firebase:firebase-bom:32.3.0")))
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
