@@ -148,17 +148,43 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void toggleDrawingMode() {
-        isDrawingMode = !isDrawingMode;
+        isDrawingMode = !isDrawingMode; // Cambia el estado del modo de dibujo
+
         if (isDrawingMode) {
+            // Entrando en modo de dibujo
             Toast.makeText(this, "Modo de dibujo activado. Toca el mapa para añadir puntos.", Toast.LENGTH_SHORT).show();
             buttonDrawPolygon.setText("Finalizar Dibujo");
+
+            // Limpiar cualquier polígono y marcadores existentes ANTES de mostrar los botones de confirmación
+            if (currentPolygon != null) {
+                currentPolygon.remove();
+                currentPolygon = null;
+            }
+            for (Marker marker : polygonMarkers) {
+                marker.remove();
+            }
+            polygonMarkers.clear();
+            polygonPoints.clear();
+
+            // Ahora sí, haz visibles los botones de control para el nuevo dibujo
             buttonConfirmPolygon.setVisibility(View.VISIBLE);
             buttonClearPolygon.setVisibility(View.VISIBLE);
-            clearPolygon(); // Limpia cualquier polígono previo al iniciar un nuevo dibujo
+
         } else {
+            // Saliendo del modo de dibujo
             Toast.makeText(this, "Modo de dibujo desactivado.", Toast.LENGTH_SHORT).show();
             buttonDrawPolygon.setText("Dibujar Polígono");
-            // Los botones Confirmar y Limpiar se mantienen visibles si hay puntos
+
+            // Si se sale del modo de dibujo y no hay puntos, ocultar los botones de control
+            // Si hay puntos, podrías dejarlos visibles para que el usuario pueda confirmar o limpiar.
+            // Esta parte depende de tu flujo deseado.
+            if (polygonPoints.isEmpty()) {
+                buttonConfirmPolygon.setVisibility(View.GONE);
+                buttonClearPolygon.setVisibility(View.GONE);
+            }
+            // Si quieres que siempre se oculten al desactivar el modo de dibujo:
+            buttonConfirmPolygon.setVisibility(View.GONE);
+            buttonClearPolygon.setVisibility(View.GONE);
         }
     }
 
@@ -175,7 +201,7 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (currentPolygon != null) {
             currentPolygon.remove();
         }
-        if (polygonPoints.size() > 1) {
+        if (polygonPoints.size() > 3) {
             PolygonOptions polygonOptions = new PolygonOptions()
                     .addAll(polygonPoints)
                     .strokeColor(Color.BLUE)
@@ -196,8 +222,7 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
         polygonPoints.clear();
         buttonConfirmPolygon.setVisibility(View.GONE);
         buttonClearPolygon.setVisibility(View.GONE);
-        buttonDrawPolygon.setText("Dibujar Polígono"); // Resetea el texto
-        isDrawingMode = false; // Desactiva el modo de dibujo
+        buttonDrawPolygon.setText("Dibujar Polígono");
     }
 
     private void confirmPolygon() {
