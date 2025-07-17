@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.unal.micasaya.R;
+import com.unal.micasaya.ui.Cuestionario.CuestionarioActivity;
 import com.unal.micasaya.ui.MainActivity;
 import com.unal.micasaya.ui.Map.MapaActivity;
 import com.unal.micasaya.ui.MisProyectos.MisProyectosActivity;
